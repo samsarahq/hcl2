@@ -114,6 +114,7 @@ type fieldTags struct {
 	Labels     []labelField
 	Remain     *int
 	Optional   map[string]bool
+	OmitEmpty  map[string]bool
 }
 
 type labelField struct {
@@ -126,6 +127,7 @@ func getFieldTags(ty reflect.Type) *fieldTags {
 		Attributes: map[string]int{},
 		Blocks:     map[string]int{},
 		Optional:   map[string]bool{},
+		OmitEmpty:  map[string]bool{},
 	}
 
 	ct := ty.NumField()
@@ -144,6 +146,11 @@ func getFieldTags(ty reflect.Type) *fieldTags {
 		} else {
 			name = tag
 			kind = "attr"
+		}
+
+		hcleTag := field.Tag.Get("hcle")
+		if hcleTag == "omitempty" {
+			ret.OmitEmpty[name] = true
 		}
 
 		switch kind {
