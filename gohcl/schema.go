@@ -152,6 +152,9 @@ func getFieldTags(ty reflect.Type) *fieldTags {
 		if hcleTag == "omitempty" {
 			ret.OmitEmpty[name] = true
 		}
+		if hcleTag == "omit" {
+			continue
+		}
 
 		switch kind {
 		case "attr":
