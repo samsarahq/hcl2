@@ -153,9 +153,6 @@ func populateBody(rv reflect.Value, ty reflect.Type, tags *fieldTags, dst *hclwr
 				elemTy = elemTy.Elem()
 			}
 
-			if tags.OmitEmpty[name] && fieldVal.IsZero() {
-				continue // ignore empty fields that are tagged as omitempty.
-			}
 			if bodyType.AssignableTo(elemTy) || attrsType.AssignableTo(elemTy) {
 				continue // ignore undecoded fields
 			}
@@ -184,6 +181,9 @@ func populateBody(rv reflect.Value, ty reflect.Type, tags *fieldTags, dst *hclwr
 				}
 				if elemTy.Kind() == reflect.Ptr && fieldVal.IsNil() {
 					continue // ignore
+				}
+				if tags.OmitEmpty[name] && fieldVal.IsZero() {
+					continue // ignore empty fields that are tagged as omitempty.
 				}
 				block := EncodeAsBlock(fieldVal.Interface(), name)
 				if !prevWasBlock {
