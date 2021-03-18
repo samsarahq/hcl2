@@ -123,7 +123,7 @@ func populateBody(rv reflect.Value, ty reflect.Type, tags *fieldTags, dst *hclwr
 			if fieldTy.Kind() == reflect.Ptr && fieldVal.IsNil() {
 				continue // ignore
 			}
-			if tags.OmitEmpty[name] && fieldVal.IsZero() {
+			if field.Type.Kind() != reflect.Ptr && tags.OmitEmpty[name] && fieldVal.IsZero() {
 				continue // ignore empty fields that are tagged as omitempty.
 			}
 			if prevWasBlock {
