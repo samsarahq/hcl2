@@ -153,9 +153,6 @@ func populateBody(rv reflect.Value, ty reflect.Type, tags *fieldTags, dst *hclwr
 				elemTy = elemTy.Elem()
 			}
 
-			if bodyType.AssignableTo(elemTy) || attrsType.AssignableTo(elemTy) {
-				continue // ignore undecoded fields
-			}
 			prevWasBlock = false
 
 			if isSeq {
